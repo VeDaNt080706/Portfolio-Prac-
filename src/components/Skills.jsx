@@ -1,81 +1,53 @@
-import { useRef } from 'react';
+import { useState } from 'react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import TypewriterText from './TypewriterText';
 import { skillGroups, currentlyLearning } from '../data';
 
-// ── SVG imports from assets ──────────────────────────────────────────────────
-import jsLogo      from '../assets/javascript.svg';
-import pyLogo      from '../assets/python.svg';
-import javaLogo    from '../assets/java.svg';
-import htmlLogo    from '../assets/html.svg';
-import cssLogo     from '../assets/css-3.svg';
-import reactLogo   from '../assets/react.svg';
-import dockerLogo  from '../assets/docker.svg';
-import awsLogo     from '../assets/aws.svg';
-import gitLogo     from '../assets/git.svg';
-import cursorLogo  from '../assets/cursor.svg';
-import claudeLogo  from '../assets/claude-code.svg';
-import figmaLogo   from '../assets/figma.svg';
-import notionLogo  from '../assets/notion (1).svg';
-
-// ── Icon map: skill label → SVG src ─────────────────────────────────────────
-const ICON_MAP = {
-  'JavaScript':           jsLogo,
-  'Python':               pyLogo,
-  'Java':                 javaLogo,
-  'HTML / CSS':           htmlLogo,
-  'HTML':                 htmlLogo,
-  'CSS':                  cssLogo,
-  'React':                reactLogo,
-  'Docker (intermediate)':dockerLogo,
-  'Docker':               dockerLogo,
-  'AWS basics (EC2, S3)': awsLogo,
-  'AWS':                  awsLogo,
-  'Git / GitHub':         gitLogo,
-  'Git':                  gitLogo,
-  'Cursor':               cursorLogo,
-  'Claude Code':          claudeLogo,
-  'Figma':                figmaLogo,
-  'Notion':               notionLogo,
-};
-
 /**
- * SkillIcon — SVG logo inside a white rounded pill.
- * White background ensures every logo pops against the black page.
+ * AccordionItem — a completely independent, self-contained accordion row.
+ * Each instance manages its own open/closed state.
+ * Headers never disappear — only the content animates in/out.
  */
-function SkillIcon({ label }) {
-  const src = ICON_MAP[label];
-  if (!src) return null;
-
-  return (
-    <span className="skill-icon-wrap" aria-hidden="true">
-      <img src={src} alt="" className="skill-icon" width={14} height={14} />
-    </span>
-  );
-}
-
-/**
- * SkillGroup — reveals with a staggered fade-up.
- */
-function SkillGroup({ category, items, delay }) {
+function AccordionItem({ category, items, delay }) {
+  const [open, setOpen] = useState(false);
   const ref = useScrollReveal({ rootMargin: '0px 0px -30px 0px' });
+
   return (
     <div
       ref={ref}
-      className="skills__group anim-fade-up"
+      className="skills__accordion anim-fade-up"
       data-delay={delay}
-      role="listitem"
-      aria-label={`${category} skills`}
     >
-      <p className="skills__group-label">{category}</p>
-      <ul className="skills__items" role="list">
-        {items.map((item) => (
-          <li key={item} className="skills__item">
-            <SkillIcon label={item} />
-            {item}
-          </li>
-        ))}
-      </ul>
+      {/* Header — always visible, never removed from DOM */}
+      <button
+        className="skills__accordion-header"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-controls={`skills-content-${category}`}
+        aria-label={`${category} — ${open ? 'collapse' : 'expand'}`}
+      >
+        <span className="skills__accordion-label">{category}</span>
+        <span className="skills__accordion-count">{items.length}</span>
+        <span className="skills__accordion-chevron" aria-hidden="true">
+          {open ? '−' : '+'}
+        </span>
+      </button>
+
+      {/* Content — hidden/shown via CSS max-height, never unmounted */}
+      <div
+        id={`skills-content-${category}`}
+        className={`skills__accordion-content${open ? ' skills__accordion-content--open' : ''}`}
+        role="region"
+        aria-label={`${category} skills`}
+      >
+        <div className="skills__accordion-pills">
+          {items.map((item) => (
+            <span key={item} className="skills__accordion-pill">
+              {item}
+            </span>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
@@ -94,10 +66,10 @@ export default function Skills() {
           id="skills-heading"
         />
 
-        {/* Proficiency groups — each group staggered */}
-        <div className="skills__grid" role="list" aria-label="Skill groups">
+        {/* Full-width accordion list — each row is independent */}
+        <div className="skills__accordion-list" role="list" aria-label="Skill categories">
           {skillGroups.map(({ category, items }, i) => (
-            <SkillGroup
+            <AccordionItem
               key={category}
               category={category}
               items={items}
@@ -106,10 +78,7 @@ export default function Skills() {
           ))}
         </div>
 
-        {/*
-          Currently learning — OWN block, separate from proficiency groups.
-          No icons here — these are not claimed proficiencies.
-        */}
+        {/* Currently learning — separate block */}
         <div
           ref={learningRef}
           className="skills__learning anim-fade-up"
@@ -117,17 +86,19 @@ export default function Skills() {
         >
           <div className="skills__learning-header">
             <span id="learning-heading" className="skills__learning-label">
-              [~] Currently learning
+              [~] Currently Learning
             </span>
             <span className="caption-md color-mute">
               &mdash; in progress, not yet proficient
             </span>
           </div>
-          <ul className="skills__learning-items" role="list">
+          <div className="skills__learning-badges">
             {currentlyLearning.map((item) => (
-              <li key={item} className="skills__learning-item">{item}</li>
+              <span key={item} className="skills__learning-badge">
+                {item}
+              </span>
             ))}
-          </ul>
+          </div>
         </div>
       </div>
     </section>

@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { contact } from '../data';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ASCII block-pixel "Vedant" wordmark
@@ -23,7 +22,7 @@ const BOOT_LINES = [
   { text: '  diploma student  •  devops  •  web dev  •  building',           isCmd: false, charSpeed: 14, pauseAfter: 260 },
   { text: '',                                                                 isGap: true,                pauseAfter: 120 },
   { text: '$ ls projects/',                                                   isCmd: true,  charSpeed: 65, pauseAfter: 180 },
-  { text: '  laundryease/    hackathon-chatbot/    [more-soon/]',             isCmd: false, charSpeed: 12, pauseAfter: 260 },
+  { text: '  ui-ux-case-study/    [more-soon/]',                              isCmd: false, charSpeed: 12, pauseAfter: 260 },
   { text: '',                                                                 isGap: true,                pauseAfter: 120 },
   { text: '$ git status',                                                     isCmd: true,  charSpeed: 65, pauseAfter: 180 },
   { text: '  branch: main  •  tracking: origin/main  •  building in public', isCmd: false, charSpeed: 10, pauseAfter: 0  },
@@ -98,34 +97,19 @@ export default function Hero() {
     <section id="top" ref={heroRef} className="hero" aria-labelledby="hero-name">
       <div className="container">
 
-        {/* CTA buttons stay above the panel for easy access */}
-        <div className="hero__ctas" style={{ marginBottom: 'var(--space-xxl)' }}>
-          <a id="hero-cta-projects" href="#projects" className="btn btn-primary">
-            [+] View projects
-          </a>
-          <a id="hero-cta-contact" href="#contact" className="btn btn-secondary">
-            Contact
-          </a>
-          {contact.resume && (
-            <a
-              id="hero-cta-resume"
-              href={contact.resume}
-              className="btn btn-secondary"
-              target="_blank"
-              rel="noreferrer"
-              download
-            >
-              Resume ↓
-            </a>
-          )}
-        </div>
+        {/* ── macOS Terminal Window ── */}
+        <div className="hero__mac-window" role="img" aria-label="Terminal interface — Vedant.S.Mungapatil portfolio">
 
-        {/* ── TUI Panel ── */}
-        <div
-          className="hero__tui"
-          role="img"
-          aria-label="Terminal interface — Vedant.S.Mungapatil portfolio"
-        >
+          {/* Title bar */}
+          <div className="hero__mac-titlebar" aria-hidden="true">
+            <span className="hero__mac-dot hero__mac-dot--red" />
+            <span className="hero__mac-dot hero__mac-dot--yellow" />
+            <span className="hero__mac-dot hero__mac-dot--green" />
+            <span className="hero__mac-title">vedant.s.mungapatil — portfolio</span>
+          </div>
+
+          {/* Terminal body */}
+          <div className="hero__tui">
           {bootDone ? (
             <div className="tui-fade-in">
               {/* ASCII wordmark — position:relative, no transform */}
@@ -140,11 +124,11 @@ export default function Hero() {
                 </h1>
                 <p className="hero__tui-tagline">
                   <span className="hero__tui-prompt-pipe">│</span>{' '}
-                  Diploma student building in DevOps &amp; Web Development
+                  Cloud Computing &amp; Big Data Diploma Student
                 </p>
                 <p className="hero__tui-hook">
                   <span className="hero__tui-prompt-pipe">│</span>{' '}
-                  I build and ship things — exploring DevOps tooling &amp; full-stack web apps.
+                  Learning DevOps and Full Stack Web Development
                 </p>
               </div>
 
@@ -190,6 +174,7 @@ export default function Hero() {
               )}
             </div>
           )}
+          </div>
         </div>
       </div>
     </section>

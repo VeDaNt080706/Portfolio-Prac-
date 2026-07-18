@@ -451,17 +451,53 @@ section + section {
   align-items: center;
 }
 
-/* Hero TUI mockup */
+/* ── macOS window wrapper — hero section ── */
+.hero__mac-window {
+  background: #1e1e1e;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+}
+
+.hero__mac-titlebar {
+  background: #2d2d2d;
+  padding: 11px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+
+.hero__mac-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.hero__mac-dot--red    { background: #ff5f56; }
+.hero__mac-dot--yellow { background: #ffbd2e; }
+.hero__mac-dot--green  { background: #27c93f; }
+
+.hero__mac-title {
+  color: var(--color-mute);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Hero TUI body — sits inside the mac window */
 .hero__tui {
   background: var(--color-surface-dark);
   color: var(--color-on-dark);
   padding: clamp(1.5rem, 4vw, 3rem) clamp(1.5rem, 4vw, 3rem);
-  border: 1px solid var(--color-hairline);
-  border-radius: var(--radius-none);
   font-family: var(--font-mono);
   min-height: 260px;
   position: relative;
-  /* overflow:hidden removed — it was clipping contents on some viewports */
+  /* border and border-radius handled by hero__mac-window */
 }
 
 /* ASCII wordmark — static, no parallax transform */
@@ -600,6 +636,56 @@ section + section {
 .about__stat-val    { color: var(--color-body); }
 .about__stat-val--num   { color: var(--color-warning); }
 .about__stat-val--green { color: var(--color-success); }
+
+/* ── macOS Terminal Card (About section right side) ── */
+.about__terminal {
+  background: #1e1e1e;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.about__terminal-titlebar {
+  background: #2d2d2d;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.about__terminal-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.about__terminal-dot--red    { background: #ff5f56; }
+.about__terminal-dot--yellow { background: #ffbd2e; }
+.about__terminal-dot--green  { background: #27c93f; }
+
+.about__terminal-title {
+  color: var(--color-mute);
+  font-size: 12px;
+  margin-left: auto;
+  margin-right: auto;
+  font-weight: 500;
+}
+
+.about__terminal-body {
+  padding: var(--space-lg);
+  min-height: 220px;
+  line-height: 1.7;
+}
+
+.term-line { white-space: pre-wrap; word-break: break-all; }
+.term-line--cmd { color: var(--color-success); font-weight: 500; }
+.term-line--out { color: var(--color-body); padding-left: 4px; }
+.term-line--gap { height: 0.6em; }
+.term-line--typing { color: var(--color-success); font-weight: 500; }
 
 /* =============================================================
    INTERNSHIP
@@ -775,70 +861,104 @@ section + section {
 }
 
 /* =============================================================
-   SKILLS
+   SKILLS — Accordion layout
    ============================================================= */
 
-.skills__grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0;
+.skills__accordion-list {
+  display: flex;
+  flex-direction: column;
 }
-.skills__group {
-  padding: var(--space-lg) 0;
+
+.skills__accordion {
   border-bottom: 1px solid var(--color-hairline);
 }
-.skills__group:nth-child(odd) {
-  padding-right: var(--space-xxl);
-  border-right: 1px solid var(--color-hairline);
-}
-.skills__group:nth-child(even) {
-  padding-left: var(--space-xxl);
-}
-.skills__group-label {
-  font-size: var(--text-caption);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--color-mute);
-  margin-bottom: var(--space-sm);
-}
-.skills__items { display: flex; flex-direction: column; gap: 8px; }
-.skills__item {
+
+.skills__accordion-header {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
-  color: var(--color-body);
+  width: 100%;
+  padding: var(--space-lg) 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-mono);
   font-size: var(--text-body);
+  color: var(--color-ink);
+  font-weight: 600;
+  gap: var(--space-md);
+  transition: color 0.15s;
 }
-.skills__item::before {
-  content: '[+]';
+.skills__accordion-header:hover {
+  color: var(--color-ink-deep);
+}
+.skills__accordion-header:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.skills__accordion-label {
+  flex: 1;
+  text-align: left;
+}
+
+.skills__accordion-count {
+  font-size: var(--text-caption);
   color: var(--color-mute);
-  flex-shrink: 0;
-  font-weight: 500;
+  background: var(--color-surface-card);
+  padding: 1px 8px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-hairline);
+  font-weight: 400;
 }
 
-/* ── Skill icon: white pill wrapping the SVG logo ─────────── */
-.skill-icon-wrap {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 22px;
-  background: #ffffff;
-  border-radius: 5px;
+.skills__accordion-chevron {
+  font-size: 18px;
+  color: var(--color-mute);
+  width: 24px;
+  text-align: center;
+  transition: transform 0.3s ease;
   flex-shrink: 0;
-  padding: 2px;
-  /* Subtle shadow so the pill reads on both light logo colors */
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.08);
-}
-.skill-icon {
-  width: 14px;
-  height: 14px;
-  object-fit: contain;
-  display: block;
+  font-weight: 400;
 }
 
-/* Currently learning — separate block */
+.skills__accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, opacity 0.3s ease;
+  opacity: 0;
+}
+
+.skills__accordion-content--open {
+  max-height: 200px;
+  opacity: 1;
+}
+
+.skills__accordion-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  padding-bottom: var(--space-lg);
+}
+
+.skills__accordion-pill {
+  display: inline-block;
+  background: var(--color-surface-card);
+  color: var(--color-body);
+  font-size: var(--text-caption);
+  font-weight: 400;
+  line-height: 1.6;
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-hairline);
+  transition: border-color 0.15s, color 0.15s;
+}
+.skills__accordion-pill:hover {
+  border-color: var(--color-hairline-strong);
+  color: var(--color-ink);
+}
+
+/* Currently learning — separate block with badges */
 .skills__learning {
   margin-top: var(--space-xxl);
   padding: var(--space-xl);
@@ -849,7 +969,7 @@ section + section {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-lg);
   flex-wrap: wrap;
 }
 .skills__learning-label {
@@ -857,23 +977,25 @@ section + section {
   font-size: var(--text-body);
   color: var(--color-warning);
 }
-.skills__learning-items {
+.skills__learning-badges {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-xl);
+  gap: var(--space-sm);
 }
-.skills__learning-item {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  color: var(--color-body);
-  font-size: var(--text-body);
-}
-.skills__learning-item::before {
-  content: '[~]';
+.skills__learning-badge {
+  display: inline-block;
+  background: transparent;
   color: var(--color-warning);
-  flex-shrink: 0;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: 400;
+  line-height: 1.6;
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 159, 10, 0.3);
+  transition: border-color 0.15s;
+}
+.skills__learning-badge:hover {
+  border-color: rgba(255, 159, 10, 0.5);
 }
 
 /* =============================================================
@@ -1016,14 +1138,8 @@ section + section {
   .projects__grid {
     grid-template-columns: 1fr;
   }
-  .skills__grid { grid-template-columns: 1fr; }
-  .skills__group:nth-child(odd) { padding-right: 0; border-right: none; }
-  .skills__group:nth-child(even) { padding-left: 0; }
 
-  .hackathon-row { grid-template-columns: 110px 1fr; }
-  .hackathon-row__outcome { grid-column: 2; text-align: left; }
-
-  /* About + Internship: stack to single column on medium screens */
+  /* About + Experience: stack to single column on medium screens */
   .about__grid { grid-template-columns: 1fr; }
 
   .status-bar__right { display: none; }
@@ -1040,24 +1156,17 @@ section + section {
     --text-display: 26px;
   }
 
-  .hackathon-row {
-    grid-template-columns: 1fr;
-    gap: var(--space-sm);
-  }
-  .hackathon-row__outcome {
-    grid-column: 1;
-    text-align: left;
-  }
   .footer__links { flex-direction: column; align-items: flex-start; gap: var(--space-lg); }
   .footer__bottom { flex-direction: column; align-items: flex-start; }
 
   .hero__tui { padding: var(--space-xl) var(--space-lg); }
   .hero__tui-ascii { font-size: 7px; }
+
+  .about__terminal-body { min-height: 180px; padding: var(--space-md); }
 }
 
 @media (max-width: 420px) {
   :root { --text-display: 22px; }
-  .hero__ctas { flex-direction: column; align-items: flex-start; }
 
   .project-card__file-row {
     grid-template-columns: 1fr;

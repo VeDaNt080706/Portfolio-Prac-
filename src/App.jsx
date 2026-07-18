@@ -6,7 +6,6 @@ import About      from './components/About';
 import Internship from './components/Internship';
 import Projects   from './components/Projects';
 import Skills     from './components/Skills';
-import Hackathons from './components/Hackathons';
 import Footer     from './components/Footer';
 import StatusBar  from './components/StatusBar';
 
@@ -25,7 +24,6 @@ export default function App() {
         <Internship />
         <Projects />
         <Skills />
-        <Hackathons />
       </main>
 
       <Footer />

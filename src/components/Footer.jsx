@@ -11,11 +11,6 @@ export default function Footer() {
             [+] Contact
           </h2>
 
-          <p className="body-md color-body" style={{ maxWidth: 520 }}>
-            Reach out if you&apos;re a judge, collaborator, or just curious.
-            Static links — no contact form.
-          </p>
-
           <nav className="footer__links" aria-label="Contact links">
             {/* Email */}
             <a
@@ -33,7 +28,7 @@ export default function Footer() {
               href={contact.github}
               className="footer__link"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               <span aria-hidden="true">[gh]</span>
               <span>GitHub ↗</span>
@@ -45,11 +40,25 @@ export default function Footer() {
               href={contact.linkedin}
               className="footer__link"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               <span aria-hidden="true">[in]</span>
               <span>LinkedIn ↗</span>
             </a>
+
+            {/* Instagram */}
+            {contact.instagram && (
+              <a
+                id="contact-instagram"
+                href={contact.instagram}
+                className="footer__link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span aria-hidden="true">[ig]</span>
+                <span>Instagram ↗</span>
+              </a>
+            )}
 
             {/* Phone */}
             {contact.phone && (
@@ -70,7 +79,7 @@ export default function Footer() {
                 href={contact.resume}
                 className="footer__link"
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 download
               >
                 <span aria-hidden="true">[cv]</span>

@@ -1,12 +1,11 @@
 import { useState } from 'react';
 
 const NAV_LINKS = [
-  { label: 'About',       href: '#about' },
-  { label: 'Internship',  href: '#internship' },
-  { label: 'Projects',    href: '#projects' },
-  { label: 'Skills',      href: '#skills' },
-  { label: 'Hackathons',  href: '#hackathons' },
-  { label: 'Contact',     href: '#contact' },
+  { label: 'About',      href: '#about' },
+  { label: 'Experience', href: '#internship' },
+  { label: 'Projects',   href: '#projects' },
+  { label: 'Skills',     href: '#skills' },
+  { label: 'Contact',    href: '#contact' },
 ];
 
 export default function Nav() {
