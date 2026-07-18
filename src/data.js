@@ -42,7 +42,7 @@ export const skillGroups = [
   },
   {
     category: 'Tools',
-    items: ['Figma', 'VS Code', 'Docker'],
+    items: ['Figma', 'VS Code', 'Docker', 'Git', 'Github', 'Vercel', 'Supabase'],
   },
   {
     category: 'AI Tools',
