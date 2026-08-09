@@ -4,12 +4,10 @@ import TypewriterText from './TypewriterText';
 import { skillGroups, currentlyLearning } from '../data';
 
 /**
- * AccordionItem — a completely independent, self-contained accordion row.
- * Each instance manages its own open/closed state.
- * Headers never disappear — only the content animates in/out.
+ * AccordionItem — controlled accordion row.
+ * open/close state is managed by the parent so only one can be open at a time.
  */
-function AccordionItem({ category, items, delay }) {
-  const [open, setOpen] = useState(false);
+function AccordionItem({ category, items, delay, isOpen, onToggle }) {
   const ref = useScrollReveal({ rootMargin: '0px 0px -30px 0px' });
 
   return (
@@ -21,22 +19,22 @@ function AccordionItem({ category, items, delay }) {
       {/* Header — always visible, never removed from DOM */}
       <button
         className="skills__accordion-header"
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
+        onClick={onToggle}
+        aria-expanded={isOpen}
         aria-controls={`skills-content-${category}`}
-        aria-label={`${category} — ${open ? 'collapse' : 'expand'}`}
+        aria-label={`${category} — ${isOpen ? 'collapse' : 'expand'}`}
       >
         <span className="skills__accordion-label">{category}</span>
         <span className="skills__accordion-count">{items.length}</span>
         <span className="skills__accordion-chevron" aria-hidden="true">
-          {open ? '−' : '+'}
+          {isOpen ? '−' : '+'}
         </span>
       </button>
 
       {/* Content — hidden/shown via CSS max-height, never unmounted */}
       <div
         id={`skills-content-${category}`}
-        className={`skills__accordion-content${open ? ' skills__accordion-content--open' : ''}`}
+        className={`skills__accordion-content${isOpen ? ' skills__accordion-content--open' : ''}`}
         role="region"
         aria-label={`${category} skills`}
       >
@@ -54,6 +52,12 @@ function AccordionItem({ category, items, delay }) {
 
 export default function Skills() {
   const learningRef = useScrollReveal({ rootMargin: '0px 0px -20px 0px' });
+  // null = all closed; number = index of the open row
+  const [openIndex, setOpenIndex] = useState(null);
+
+  const handleToggle = (i) => {
+    setOpenIndex((prev) => (prev === i ? null : i));
+  };
 
   return (
     <section id="skills" aria-labelledby="skills-heading">
@@ -66,7 +70,7 @@ export default function Skills() {
           id="skills-heading"
         />
 
-        {/* Full-width accordion list — each row is independent */}
+        {/* Full-width accordion list — only one row open at a time */}
         <div className="skills__accordion-list" role="list" aria-label="Skill categories">
           {skillGroups.map(({ category, items }, i) => (
             <AccordionItem
@@ -74,6 +78,8 @@ export default function Skills() {
               category={category}
               items={items}
               delay={i + 1}
+              isOpen={openIndex === i}
+              onToggle={() => handleToggle(i)}
             />
           ))}
         </div>

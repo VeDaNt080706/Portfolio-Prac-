@@ -6,8 +6,9 @@
 
 // ---------------------------------------------------------------------------
 // PROJECTS
-// Each entry: { id, name, oneLiner, description, role, stack, status, links }
-// links: array of { label, href }
+// Each entry: { id, name, oneLiner, description, role, workflow, stack, status, links, externalLinks }
+// links: array of { label, href }           — Certificate etc. shown under description
+// externalLinks: array of tab-card links    — shown in "Links" tab
 // ---------------------------------------------------------------------------
 export const projects = [
   {
@@ -15,14 +16,28 @@ export const projects = [
     name: 'UI / UX Case Study',
     oneLiner: 'A mobile laundry service app concept with a fully designed UI/UX system.',
     description:
-      'Designed and prototyped a mobile laundry service app, including a complete Figma design system (component library, design tokens, dark/light theme variants). Explored converting Figma designs directly to code using MCP-based tooling in Cursor.',
+      'A complete UI/UX case study for a mobile laundry service marketplace app — covering user flow, site map, and a fully designed Figma UI system, built using Google Stitch and refined in Figma.',
     role: 'Designer + developer — owns design system, UI structure, and frontend implementation',
+    workflow:
+      'Sourced UI inspiration from a curated collection of Pinterest references, then described the desired interface to Google Stitch to generate an initial layout. Exported the output into Figma and refined it further — applying Auto Layout, spacing, and component structure to production quality.',
     stack: ['Google Stitch', 'Figma', 'Miro', 'Figma MCP'],
     status: 'Completed',
     links: [
-      { label: '[GitHub]', href: '#' },
-      { label: '[Figma]', href: '#' },
       { label: '[Certificate]', href: 'https://drive.google.com/file/d/1Pvm-rDQ45mqhrl_Kw3DmwkOAE4kjUSO6/view?usp=sharing' },
+    ],
+    externalLinks: [
+      {
+        label: 'User Flow & Site Map',
+        href: 'https://miro.com/miroverse/laundryease-sitemap-userflow/?social=copy-link',
+        platform: 'miro',
+        thumbnailKey: 'miro',
+      },
+      {
+        label: 'Figma Community link',
+        href: 'https://www.figma.com/community/file/1668355994797358216',
+        platform: 'figma',
+        thumbnailKey: 'figma',
+      },
     ],
   },
 ];

@@ -2,6 +2,8 @@ import { useScrollReveal } from '../hooks/useScrollReveal';
 import TypewriterText from './TypewriterText';
 import { projects } from '../data';
 import ProjectCard from './ProjectCard';
+import UiUxProjectCard from './UiUxProjectCard';
+
 
 export default function Projects() {
   const gridRef = useScrollReveal({ rootMargin: '0px 0px -30px 0px' });
@@ -18,9 +20,14 @@ export default function Projects() {
         />
 
         <div ref={gridRef} className="projects__grid anim-fade-up">
-          {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
+          {projects.map((project) =>
+            project.id === 'ui-ux-case-study' ? (
+              <UiUxProjectCard key={project.id} project={project} />
+            ) : (
+              <ProjectCard key={project.id} project={project} />
+            )
+          )}
+
 
           {/* Placeholder slot — always the last cell */}
           <div
